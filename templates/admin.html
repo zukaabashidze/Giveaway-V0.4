@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard 🛠️</title>
+    <style>
+        :root {
+            --primary: #00d4ff;
+            --accent: #0055ff;
+            --bg: #050510;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --danger: #ff4b2b;
+            --success: #00ff88;
+        }
+
+        body {
+            background: var(--bg);
+            background: radial-gradient(circle at top left, #0a0a20, #050510);
+            color: white;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            padding: 40px;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 32px;
+            background: linear-gradient(to right, var(--primary), #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* გამარჯვებულის ბლოკი */
+        .winner-box {
+            background: linear-gradient(45deg, var(--accent), var(--primary));
+            color: white;
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            display: none;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ღილაკები */
+        .btn-pick {
+            background: var(--primary);
+            color: black;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .btn-pick:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+        }
+
+        /* ცხრილი */
+        .table-container {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 18px;
+            color: var(--primary);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 15px;
+            color: #ccc;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+            color: white;
+        }
+
+        .ip-tag {
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--primary);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 13px;
+        }
+
+        .btn-delete {
+            color: var(--danger);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 13px;
+            padding: 6px 12px;
+            border: 1px solid var(--danger);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-delete:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .stats {
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ადმინ პანელი 🛠️</h1>
+        
+        <div id="win" class="winner-box"></div>
+        
+        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+            <button class="btn-pick" onclick="pick()">გამარჯვებულის გამოვლენა 🎲</button>
+            <div class="stats">სულ მონაწილე: <b>{{ participants|length }}</b></div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>სახელი გვარი</th>
+                        <th>Discord / Steam</th>
+                        <th>IP მისამართი</th>
+                        <th>მოქმედება</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in participants %}
+                    <tr>
+                        <td style="color: white; font-weight: 500;">{{ p.full_name }}</td>
+                        <td>
+                            <span style="color: #7289da;">{{ p.discord_tag }}</span><br>
+                            <span style="font-size: 12px; opacity: 0.7;">{{ p.steam_name }}</span>
+                        </td>
+                        <td><span class="ip-tag">{{ p.ip_address }}</span></td>
+                        <td>
+                            <a href="/delete/{{ p.id }}/{{ pw }}" 
+                               class="btn-delete" 
+                               onclick="return confirm('ნამდვილად გსურთ წაშლა?')">წაშლა</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        async function pick() {
+            const btn = document.querySelector('.btn-pick');
+            btn.innerText = "მიმდინარეობს შერჩევა...";
+            
+            try {
+                const res = await fetch('/pick_winner/{{ pw }}');
+                const data = await res.json();
+                
+                if(data.full_name) {
+                    const w = document.getElementById('win');
+                    w.style.display = 'block';
+                    w.innerHTML = `🏆 გამარჯვებული: <span style="color: #fff; text-decoration: underline;">${data.full_name}</span> 
+                                  <br><span style="font-size: 16px; opacity: 0.9;">Discord: ${data.discord} | Steam: ${data.steam}</span>`;
+                    
+                    // ეკრანზე ასქროლვა გამარჯვებულთან
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    alert("მონაწილეები არ არიან!");
+                }
+            } catch (e) {
+                alert("შეცდომა გამარჯვებულის გამოვლენისას.");
+            } finally {
+                btn.innerText = "გამარჯვებულის გამოვლენა 🎲";
+            }
+        }
+    </script>
+</body>
+</html> 
