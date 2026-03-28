@@ -7,153 +7,120 @@
     <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"></script>
     <style>
         :root {
-            --primary: #00d4ff;
-            --secondary: #0055ff;
-            --bg: #050510;
-            --card-bg: rgba(255, 255, 255, 0.05);
+            --primary: #ff0000; /* ხასხასა წითელი */
+            --secondary: #8b0000; /* მუქი წითელი */
+            --bg: #050000;
+            --card-bg: rgba(20, 0, 0, 0.6); /* მუქი გამჭვირვალე წითელი ტონით */
             --error: #ff4b2b;
-        }
-
-        body {
-            background: var(--bg);
-            background: radial-gradient(circle at top right, #1a1a3a, #050510);
-            color: white;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            overflow: hidden;
-        }
-
-        /* ფონის ანიმაციური ბურთები დიზაინისთვის */
-        .bg-circle {
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: var(--secondary);
-            filter: blur(100px);
-            border-radius: 50%;
-            z-index: -1;
-            opacity: 0.2;
-            animation: move 10s infinite alternate;
-        }
-
-        @keyframes move {
-            from { transform: translate(-50%, -50%); }
-            to { transform: translate(50%, 50%); }
-        }
-
-        .card {
-            background: var(--card-bg);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            padding: 40px;
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            transform: translateY(0);
-            transition: transform 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        h2 {
-            font-size: 28px;
-            margin-bottom: 10px;
-            background: linear-gradient(to right, var(--primary), #fff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 800;
-        }
-
-        p.subtitle {
-            color: #aaa;
-            font-size: 14px;
-            margin-bottom: 25px;
-        }
-
-        .input-group {
-            position: relative;
-            margin-bottom: 15px;
-        }
-
-        input {
-            width: 100%;
-            padding: 14px 16px;
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            border-radius: 12px;
-            box-sizing: border-box;
-            outline: none;
-            transition: all 0.3s;
-            font-size: 15px;
-        }
-
-        input:focus {
-            border-color: var(--primary);
-            background: rgba(0, 0, 0, 0.4);
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
-        }
-
-        button {
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(45deg, var(--secondary), var(--primary));
-            border: none;
-            color: white;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 12px;
-            margin-top: 10px;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(0, 85, 255, 0.3);
-        }
-
-        button:hover {
-            opacity: 0.9;
-            transform: scale(1.02);
-            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
-        }
-
-        button:disabled {
-            background: #444;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        #msg {
-            margin-top: 20px;
-            font-size: 14px;
-            min-height: 20px;
-            font-weight: 500;
-        }
-
-        .success { color: #00ff88; }
-        .error { color: var(--error); }
-
-        /* ბლოკირების ეკრანის დიზაინი */
-        .blocked-container {
-            text-align: center;
-            padding: 40px;
-            background: rgba(255, 75, 43, 0.1);
-            border: 1px solid var(--error);
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-        }
+            }
+            
+            body {
+                margin: 0;
+                padding: 0;
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: url('https://yt3.googleusercontent.com/v-1_7C6fB39Y59n9_fX4X-f3v9x5u_0X3x5u_0X3x5u_0X3x5u_0X3x5u_0X3x5u_0X3=s1152-nd-v1') no-repeat center center fixed;
+                background-size: cover;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                overflow: hidden;
+                position: relative;
+            }
+            
+            /* მუქი ფენა სურათზე, რომ ტექსტი გამოჩნდეს */
+            body::before {
+                content: '';
+                position: absolute;
+                top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(0, 0, 0, 0.7);
+                z-index: 0;
+            }
+            
+            /* წვიმის კონტეინერი */
+            .rain {
+                position: absolute;
+                top: 0; left: 0; width: 100%; height: 100%;
+                z-index: 1;
+                pointer-events: none;
+            }
+            
+            .drop {
+                position: absolute;
+                background: rgba(255, 0, 0, 0.3); /* წითელი წვიმა */
+                width: 1px;
+                height: 80px;
+                top: -100px;
+                animation: fall 0.5s linear infinite;
+            }
+            
+            @keyframes fall {
+                to { transform: translateY(110vh); }
+            }
+            
+            .card {
+                position: relative;
+                z-index: 10;
+                background: var(--card-bg);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 0, 0, 0.3);
+                padding: 40px;
+                border-radius: 20px;
+                width: 350px;
+                text-align: center;
+                box-shadow: 0 0 30px rgba(255, 0, 0, 0.2);
+            }
+            
+            h2 {
+                color: var(--primary);
+                text-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+                text-transform: uppercase;
+                letter-spacing: 2px;
+            }
+            
+            input {
+                background: rgba(0, 0, 0, 0.5);
+                border: 1px solid #400;
+                color: white;
+                padding: 12px;
+                border-radius: 8px;
+                width: 100%;
+                margin-bottom: 15px;
+                outline: none;
+            }
+            
+            input:focus {
+                border-color: var(--primary);
+                box-shadow: 0 0 10px var(--primary);
+            }
+            
+            button {
+                background: linear-gradient(45deg, #800, #f00);
+                border: none;
+                padding: 15px;
+                color: white;
+                font-weight: bold;
+                border-radius: 8px;
+                cursor: pointer;
+                width: 100%;
+                transition: 0.3s;
+            }
+            
+            button:hover {
+                box-shadow: 0 0 20px #f00;
+                transform: scale(1.02);
+            }
     </style>
 </head>
+    <div class="rain" id="rainContainer"></div>
+
+    <div class="card">
+        <h2>Access Granted</h2>
+        <p class="subtitle">Enter your credentials</p>
+        <input type="text" placeholder="Username">
+        <input type="password" placeholder="Password">
+        <button>Login</button>
+    </div>
 <body>
     <div class="bg-circle"></div>
     
@@ -174,6 +141,7 @@
         <button id="reg-btn" onclick="send()">რეგისტრაცია</button>
         <p id="msg"></p>
     </div>
+
 
     <script>
 // VPN და Timezone შემოწმება
@@ -268,5 +236,23 @@
             }
         }
     </script>
-</body>
+
+        <script>
+            function createRain() {
+                const container = document.getElementById('rainContainer');
+                const dropCount = 100; // რამდენი წვეთი გინდა
+            
+                for (let i = 0; i < dropCount; i++) {
+                    const drop = document.createElement('div');
+                    drop.className = 'drop';
+                    drop.style.left = Math.random() * 100 + 'vw';
+                    drop.style.animationDuration = (Math.random() * 0.5 + 0.3) + 's'; // სხვადასხვა სიჩქარე
+                    drop.style.opacity = Math.random();
+                    container.appendChild(drop);
+                }
+            }
+            
+            createRain();
+        </script>
+    </body>
 </html>
