@@ -147,6 +147,38 @@
             font-size: 14px;
             color: #888;
         }
+            .ip-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        }
+        
+        .ip-tag {
+            transition: all 0.3s ease;
+            font-family: monospace;
+        }
+        
+        /* დამალული IP-ს სტილი */
+        .hidden-ip {
+            filter: blur(5px);
+            user-select: none;
+            opacity: 0.6;
+        }
+        
+        .toggle-ip {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffb6c1; /* ვარდისფერი აქცენტი */
+            cursor: pointer;
+            border-radius: 5px;
+            padding: 2px 8px;
+            transition: 0.3s;
+        }
+        
+        .toggle-ip:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffd700; /* ოქროსფერი ჰოვერზე */
+        }
     </style>
 </head>
 <body>
