@@ -15,15 +15,15 @@
             --text-color: #ffffff;
         }
 
-        body {
+    body {
             margin: 0;
             padding: 0;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            /* ფონის სურათი images საქაღალდიდან */
-            background: #000 url('images/231561.jpeg') no-repeat center center fixed;
+            /* Flask-ის სინტაქსი სურათისთვის */
+            background: #000 url("{{ url_for('static', filename='images/231561.jpg') }}") no-repeat center center fixed;
             background-size: cover;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden;
