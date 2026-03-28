@@ -192,41 +192,53 @@
             <div class="stats">სულ მონაწილე: <b>{{ participants|length }}</b></div>
         </div>
 
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>სახელი გვარი</th>
-                        <th>Discord / Steam</th>
-                        <th>IP მისამართი</th>
-                        <th>მოქმედება</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for p in participants %}
-                    <tr>
-                        <td style="color: white; font-weight: 500;">{{ p.full_name }}</td>
-                        <td>
-                            <span style="color: #7289da;">{{ p.discord_tag }}</span><br>
-                            <span style="font-size: 12px; opacity: 0.7;">{{ p.steam_name }}</span>
-                        <td>
-                            <div class="ip-container">
-                                <span class="ip-tag hidden-ip" id="ip-{{ loop.index }}">{{ p.ip_address }}</span>
-                                <button type="button" class="toggle-ip" onclick="toggleIP('ip-{{ loop.index }}', this)">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                            </div>
-                        </td>
-                            <a href="/delete/{{ p.id }}/{{ pw }}" 
-                               class="btn-delete" 
-                               onclick="return confirm('ნამდვილად გსურთ წაშლა?')">წაშლა</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>სახელი გვარი</th>
+                <th>Discord / Steam</th>
+                <th>IP მისამართი</th>
+                <th>მოქმედება</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in participants %}
+            <tr>
+                <!-- სახელი და გვარი -->
+                <td style="color: white; font-weight: 500;">
+                    {{ p.full_name }}
+                </td>
+
+                <!-- Discord და Steam -->
+                <td>
+                    <span style="color: #7289da;">{{ p.discord_tag }}</span><br>
+                    <span style="font-size: 12px; opacity: 0.7;">{{ p.steam_name }}</span>
+                </td>
+
+                <!-- IP მისამართი -->
+                <td>
+                    <div class="ip-container">
+                        <span class="ip-tag hidden-ip" id="ip-{{ loop.index }}">{{ p.ip_address }}</span>
+                        <button type="button" class="toggle-ip" onclick="toggleIP('ip-{{ loop.index }}', this)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </td>
+
+                <!-- მოქმედება (წაშლის ღილაკი) -->
+                <td>
+                    <a href="/delete/{{ p.id }}/{{ pw }}" 
+                       class="btn-delete" 
+                       onclick="return confirm('ნამდვილად გსურთ წაშლა?')">
+                       წაშლა
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
     <script>
         async function pick() {
