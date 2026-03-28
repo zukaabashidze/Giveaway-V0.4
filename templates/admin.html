@@ -177,9 +177,14 @@
                         <td>
                             <span style="color: #7289da;">{{ p.discord_tag }}</span><br>
                             <span style="font-size: 12px; opacity: 0.7;">{{ p.steam_name }}</span>
-                        </td>
-                        <td><span class="ip-tag">{{ p.ip_address }}</span></td>
                         <td>
+                            <div class="ip-container">
+                                <span class="ip-tag hidden-ip" id="ip-{{ loop.index }}">{{ p.ip_address }}</span>
+                                <button type="button" class="toggle-ip" onclick="toggleIP('ip-{{ loop.index }}', this)">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </td>
                             <a href="/delete/{{ p.id }}/{{ pw }}" 
                                class="btn-delete" 
                                onclick="return confirm('ნამდვილად გსურთ წაშლა?')">წაშლა</a>
