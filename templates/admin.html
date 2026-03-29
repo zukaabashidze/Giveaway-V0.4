@@ -6,171 +6,186 @@
     <title>Admin Dashboard 🛠️</title>
     <style>
         :root {
-            --primary: #00d4ff;
-            --accent: #0055ff;
-            --bg: #050510;
-            --card-bg: rgba(255, 255, 255, 0.03);
+            --primary: #ff0000; /* ხასხასა ნეონის წითელი */
+            --accent: #8b0000;  /* მუქი წითელი აქცენტებისთვის */
+            --bg: #0a0000;      /* თითქმის შავი, წითელი ტონით */
+            --card-bg: rgba(20, 0, 0, 0.4); /* მუქი გამჭვირვალე წითელი */
             --danger: #ff4b2b;
             --success: #00ff88;
-            --text-color: #ffffff;
         }
         
         body {
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            /* ფონი მეორე დიზაინიდან */
             background: var(--bg);
-            background: radial-gradient(circle at top left, #0a0a20, #050510) fixed;
-            background-size: cover;
+            /* რადიალური გრადიენტი უფრო ღრმა ეფექტისთვის */
+            background: radial-gradient(circle at top left, #200000, #050000);
+            color: white;
             font-family: 'Segoe UI', system-ui, sans-serif;
-            overflow: hidden;
-            position: relative;
-            color: var(--text-color);
-        }
-        
-        /* მუქი ფენა სურათისთვის (თუ გამოიყენებ ფონურ სურათს) */
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            z-index: 1;
-        }
-        
-        /* წვიმის კონტეინერი - ახლა ლურჯ ფერებში */
-        .rain {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 2;
-            pointer-events: none;
-        }
-        
-        .drop {
-            position: absolute;
-            background: linear-gradient(to bottom, transparent, var(--primary)); /* ლურჯი წვიმა */
-            width: 1px;
-            height: 80px;
-            top: -100px;
-            opacity: 0.5;
-            animation: fall 0.5s linear infinite;
-        }
-        
-        @keyframes fall {
-            to { transform: translateY(120vh); }
-        }
-        
-        /* რეგისტრაციის ბარათი - ფუტურისტული სტილი */
-        .card {
-            position: relative;
-            z-index: 10;
-            background: var(--card-bg);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(0, 212, 255, 0.2);
             padding: 40px;
-            border-radius: 20px;
-            width: 350px;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 
-                        0 0 20px rgba(0, 212, 255, 0.1);
+            margin: 0;
+            min-height: 100vh;
         }
         
-        h2 {
-            font-size: 28px;
-            background: linear-gradient(to right, var(--primary), #fff);
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 32px;
+            /* ტექსტის გრადიენტი წითელში */
+            background: linear-gradient(to right, var(--primary), #ffb3b3);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-top: 0;
-            margin-bottom: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.3));
         }
         
-        .subtitle {
-            font-size: 14px;
-            margin-bottom: 25px;
-            color: #888;
-        }
-        
-        /* ინპუტები */
-        input {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(0, 212, 255, 0.2);
-            color: white;
-            padding: 12px;
-            border-radius: 10px;
-            width: calc(100% - 26px);
-            margin-bottom: 15px;
-            outline: none;
-            transition: 0.3s;
-        }
-        
-        input:focus {
-            border-color: var(--primary);
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
-        }
-        
-        /* ღილაკი - ლურჯი გრადიენტით */
-        button {
+        /* გამარჯვებულის ბლოკი - ცეცხლოვანი ეფექტი */
+        .winner-box {
             background: linear-gradient(45deg, var(--accent), var(--primary));
-            border: none;
-            padding: 15px;
             color: white;
-            font-weight: bold;
-            font-size: 16px;
-            border-radius: 12px;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.3s;
-            margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.2);
-        }
-        
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
-            filter: brightness(1.1);
-        }
-        
-        /* შეტყობინებები */
-        #msg {
-            margin-top: 15px;
-            font-size: 14px;
-            min-height: 1em;
-        }
-        
-        .error { color: var(--danger); }
-        .success { color: var(--success); }
-        
-        /* დაბლოკილი მომხმარებლის კონტეინერი */
-        .blocked-container {
-            position: relative;
-            z-index: 100;
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            display: none;
             text-align: center;
-            background: rgba(5, 5, 16, 0.9);
-            padding: 40px;
-            border-radius: 20px;
-            border: 2px solid var(--danger);
-            box-shadow: 0 0 30px rgba(255, 75, 43, 0.2);
+            font-size: 20px;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.4);
+            animation: slideIn 0.5s ease;
         }
         
-        /* IP ტეგები და სხვა ელემენტები */
-        .ip-tag {
-            background: rgba(0, 212, 255, 0.1);
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* ღილაკები - Neon Red ეფექტით */
+        .btn-pick {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-pick:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(255, 0, 0, 0.6);
+            filter: brightness(1.2);
+        }
+        
+        /* ცხრილი */
+        .table-container {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 0, 0, 0.15);
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        
+        th {
+            background: rgba(255, 0, 0, 0.08);
+            padding: 18px;
             color: var(--primary);
-            padding: 4px 8px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        
+        td {
+            padding: 16px;
+            border-bottom: 1px solid rgba(255, 0, 0, 0.05);
+            font-size: 15px;
+            color: #ddd;
+        }
+        
+        tr:hover td {
+            background: rgba(255, 0, 0, 0.03);
+            color: white;
+        }
+        
+        /* IP ტეგი - წითელი განათებით */
+        .ip-tag {
+            background: rgba(255, 0, 0, 0.1);
+            color: #ff6666;
+            padding: 4px 10px;
             border-radius: 6px;
-            font-family: monospace;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            border: 1px solid rgba(255, 0, 0, 0.2);
+        }
+        
+        .btn-delete {
+            color: #ffb3b3;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 12px;
+            padding: 6px 14px;
+            border: 1px solid var(--danger);
+            border-radius: 8px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+        
+        .btn-delete:hover {
+            background: var(--danger);
+            color: white;
+            box-shadow: 0 0 15px rgba(255, 75, 43, 0.4);
+        }
+        
+        .stats {
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #996666;
+            font-style: italic;
+        }
+        
+        .ip-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* დამალული IP */
+        .hidden-ip {
+            filter: blur(6px);
+            user-select: none;
+            opacity: 0.5;
+        }
+        
+        .toggle-ip {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.2);
+            color: var(--primary);
+            cursor: pointer;
+            border-radius: 5px;
+            padding: 3px 10px;
+            font-size: 12px;
             transition: 0.3s;
         }
         
-        .hidden-ip {
-            filter: blur(5px);
-            opacity: 0.6;
+        .toggle-ip:hover {
+            background: var(--primary);
+            color: black;
         }
     </style>
 </head>
