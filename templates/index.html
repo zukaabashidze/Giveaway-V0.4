@@ -225,9 +225,11 @@
                 const data = await response.json();
                 const allowedCountries = ["GE", "GR"];
                 
-                if (!allowedCountries.includes(data.country)) {
-                    blockUser("წვდომა შეზღუდულია. რეგისტრაცია შესაძლებელია მხოლოდ საქართველოდან და საბერძნეთიდან.");
-                }
+                <div style="color: #ffffff; font-family: sans-serif;">
+                    if (!allowedCountries.includes(data.country)) {
+                        blockUser("წვდომა შეზღუდულია. რეგისტრაცია შესაძლებელია მხოლოდ საქართველოდან.");
+                    }
+                </div>
             } catch (e) {
                 console.warn("IP Check bypassed due to connection error.");
             }
