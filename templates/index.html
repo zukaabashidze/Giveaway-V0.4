@@ -15,29 +15,38 @@
             --text-color: #ffffff;
         }
 
-    body {
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            /* Flask-ის სინტაქსი სურათისთვის */
-            background: #000 url("{{ url_for('static', filename='images/231561.jpg') }}") no-repeat center center fixed;
-            background-size: cover;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden;
-            position: relative;
-            color: var(--text-color);
+       body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        min-height: 100vh; /* აიძულებს ბადის, რომ მინიმუმ ეკრანის სიმაღლე დაიკავოს */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        /* ფონის პარამეტრები */
+        background-image: url("{{ url_for('static', filename='231561.png') }}");
+        background-size:  cover;       /* ფოტო გაიწელება ისე, რომ მთლიანი სივრცე შეავსოს */
+        background-position: center;  /* ფოტო ყოველთვის ცენტრიდან იქნება ორიენტირებული */
+        background-repeat: repeat; /* რომ არ გაორდეს და არ აიჭრას */
+        background-attachment: fixed; /* ეკრანზე "მიაჭედებს" ფოტოს, რაც ძაან ეფექტურია */
+
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        overflow-x: hidden; /* გვერდითა სქროლი რომ არ გაჩნდეს შემთხვევით */
+    }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.4); /* 40%-ით დააბნელებს სურათს, რომ card უკეთ გამოჩნდეს */
+            z-index: 1;
         }
 
-        /* მუქი ფენა სურათზე, რომ ტექსტი გამოჩნდეს */
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 1;
+        /* რომ card-ი ფენის ზემოთ დარჩეს */
+        .card {
+            position: relative;
+            z-index: 2;
         }
 
         /* წვიმის კონტეინერი */
@@ -51,7 +60,7 @@
         .drop {
             position: absolute;
             background: rgba(255, 0, 0, 0.6); /* წითელი წვიმა */
-            width: 1px;
+            width: 2px;
             height: 80px;
             top: -100px;
             animation: fall 0.5s linear infinite;
@@ -64,8 +73,9 @@
         /* რეგისტრაციის ბარათი */
         .card {
             position: relative;
-            z-index: 10; /* ყველაზე ზემოთ */
-            background: var(--card-bg);
+            z-index: 10;
+            /* შეცვალე '0.1' უფრო დაბალი ციფრით მეტი გამჭვირვალობისთვის */
+            background: rgba(255, 255, 255, 0); 
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 0, 0, 0.4);
             padding: 40px;
